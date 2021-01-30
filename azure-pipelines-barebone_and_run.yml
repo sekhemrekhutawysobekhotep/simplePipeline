@@ -45,6 +45,9 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
     - script: echo "I can run inside the container (it starts by default)"
         echo hello World
+        echo
+        echo "ls -la /root/"
+              ls -la /root/
 
       #
       # target:
