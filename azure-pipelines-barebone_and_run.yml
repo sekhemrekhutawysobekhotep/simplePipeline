@@ -57,8 +57,11 @@ stages:
               docker images
         echo
         echo here is value of tag  $(tag) imageRepository $(imageRepository)
-        echo "docker run $(imageRepository) ls -la /root/"
-              docker run $(imageRepository) ls -la /root/
+        # echo "docker run $(imageRepository) ls -la /root/"
+        #       docker run $(imageRepository) ls -la /root/
+
+        echo "docker run $(imageRepository):$(tag) ls -la /root/"
+              docker run $(imageRepository):$(tag) ls -la /root/
 
 
 
