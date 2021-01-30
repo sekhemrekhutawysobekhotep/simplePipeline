@@ -53,7 +53,10 @@ stages:
         echo
         echo hello so lets issue a docker run now
         # docker run $(tag)  ls -la /root/
-        echo here is value of tag  $(tag)
+        echo "docker images"
+              docker images
+        echo 
+        echo here is value of tag  $(tag) imageRepository $(imageRepository)
 
 
 
