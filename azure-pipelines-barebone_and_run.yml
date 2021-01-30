@@ -49,11 +49,11 @@ stages:
         echo "ls -la /root/"
               ls -la /root/
 
-      - bash: |
-          echo
-          echo hello so lets issue a docker run now
-          # docker run $(tag)  ls -la /root/
-          echo here is value of tag  $(tag)
+    - bash: |
+        echo
+        echo hello so lets issue a docker run now
+        # docker run $(tag)  ls -la /root/
+        echo here is value of tag  $(tag)
 
 
 
