@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'f6574427-40e1-433e-8d97-dd5ef391af9a'
-  imageRepository: 'sekhemrebareboneTh000'
+  imageRepository: 'sekhemrebarebonettth000'
   containerRegistry: 'stenscontainerregistrycairo.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/barebone/Dockerfile'
   tag: '$(Build.BuildId)'
