@@ -67,8 +67,15 @@ stages:
         echo "docker login $(containerRegistry)  "
               docker login $(containerRegistry)
 
-        echo "docker pull $(imageRepository):$(tag) "
-              docker pull $(imageRepository):$(tag) 
+        # echo "docker pull $(imageRepository):$(tag) "
+        #       docker pull $(imageRepository):$(tag)
+        #  above gives below error
+        # 2021-01-31T00:55:20.4220359Z docker pull sekhemrebarebone:253
+        # 2021-01-31T00:55:21.4140208Z Error response from daemon: pull access denied for sekhemrebarebone, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+        #
+
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag)
 
         echo
         echo "hello Corinde "
