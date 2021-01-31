@@ -62,7 +62,7 @@ stages:
 
   - job: DockerRunImage
     dependsOn: BuildDockerImageConditionally
-    # condition: succeeded() # this job will only run if Foo fails
+    condition: succeededOrFailed() # wait for BuildDockerImageConditionally then run
     displayName: run binary inside docker container
     steps:
     - task: Docker@2
