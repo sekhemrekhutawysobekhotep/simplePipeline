@@ -64,6 +64,11 @@ stages:
         #       docker run $(imageRepository):$(tag) ls -la /root/
 
 
+        echo "docker login $(containerRegistry)  "
+              docker login $(containerRegistry)
+        echo
+        echo "hello Corinde "
+
 
 
 
