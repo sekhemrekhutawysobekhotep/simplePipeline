@@ -81,6 +81,10 @@ stages:
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/ "
               docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/
 
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh
+
         echo
         echo "hello Corinde "
 
