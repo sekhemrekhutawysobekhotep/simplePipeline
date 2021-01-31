@@ -46,8 +46,8 @@ stages:
     dependsOn: LoginContainerRegistryDockerPullImage
     condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
     displayName: if docker image does not exist then build it
-    pool:
-      vmImage: $(vmImageName)
+    # pool:
+    #   vmImage: $(vmImageName)
     steps:
     - task: Docker@2
       displayName: Build and push an image to container registry bare bone
@@ -77,7 +77,7 @@ stages:
         echo
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
-              
+
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
               docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
         echo
