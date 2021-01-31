@@ -66,6 +66,10 @@ stages:
 
         echo "docker login $(containerRegistry)  "
               docker login $(containerRegistry)
+
+        echo "docker pull $(imageRepository):$(tag) "
+              docker pull $(imageRepository):$(tag) 
+
         echo
         echo "hello Corinde "
 
