@@ -18,6 +18,7 @@ variables:
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
+  tag_latest: 'latest'
 
 stages:
 - stage: Build
@@ -37,6 +38,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+          $(tag_latest)
 
     - task: Docker@2
       displayName: Login to ACR and run something
@@ -77,6 +79,9 @@ stages:
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag)
 
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
+
 
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/ "
               docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/
@@ -84,6 +89,11 @@ stages:
 
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh "
               docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh
+
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
+
 
         echo
         echo "hello Corinde "
