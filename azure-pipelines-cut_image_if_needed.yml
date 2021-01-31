@@ -1,0 +1,108 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'f6574427-40e1-433e-8d97-dd5ef391af9a'
+  imageRepository: 'sekhemrebarebone'
+  containerRegistry: 'stenscontainerregistrycairo.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/barebone/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  tag_latest: 'latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage bare bones
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    # - task: Docker@2
+    #   displayName: Build and push an image to container registry bare bone
+    #   inputs:
+    #     command: buildAndPush
+    #     repository: $(imageRepository)
+    #     dockerfile: $(dockerfilePath)
+    #     containerRegistry: $(dockerRegistryServiceConnection)
+    #     tags: |
+    #       $(tag)
+    #       $(tag_latest)
+
+    - task: Docker@2
+      displayName: Login to ACR and run something
+      inputs:
+        command: login
+        containerRegistry: $(dockerRegistryServiceConnection)
+    - script: echo "I can run inside the container (it starts by default)"
+        echo hello World
+        echo
+        echo "ls -la /root/"
+              ls -la /root/
+
+    - bash: |
+        echo
+        echo hello so lets issue a docker run now
+        # docker run $(tag)  ls -la /root/
+        echo "docker images"
+              docker images
+        echo
+        echo here is value of tag  $(tag) imageRepository $(imageRepository)
+        # echo "docker run $(imageRepository) ls -la /root/"
+        #       docker run $(imageRepository) ls -la /root/
+
+        # echo "docker run $(imageRepository):$(tag) ls -la /root/"
+        #       docker run $(imageRepository):$(tag) ls -la /root/
+
+
+        echo "docker login $(containerRegistry)  "
+              docker login $(containerRegistry)
+
+        # echo "docker pull $(imageRepository):$(tag) "
+        #       docker pull $(imageRepository):$(tag)
+        #  above gives below error
+        # 2021-01-31T00:55:20.4220359Z docker pull sekhemrebarebone:253
+        # 2021-01-31T00:55:21.4140208Z Error response from daemon: pull access denied for sekhemrebarebone, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+        #
+
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag)
+
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
+
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/ "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/
+
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh
+
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
+
+
+        echo
+        echo "hello Corinde "
+
+
+
+
+      #
+      # target:
+      #   container: builder
+      #
+      #
