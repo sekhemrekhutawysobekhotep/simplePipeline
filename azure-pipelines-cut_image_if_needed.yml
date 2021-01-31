@@ -61,8 +61,8 @@ stages:
           $(tag_latest)
 
   - job: DockerRunImage
-    dependsOn: BuildDockerImageConditionally
-    condition: succeeded() # this job will only run if Foo fails
+    # dependsOn: BuildDockerImageConditionally
+    # condition: succeeded() # this job will only run if Foo fails
     displayName: run binary inside docker container
     steps:
     - task: Docker@2
