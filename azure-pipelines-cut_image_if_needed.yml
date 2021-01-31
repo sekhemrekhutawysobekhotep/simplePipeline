@@ -58,37 +58,13 @@ stages:
         echo "docker images"
               docker images
         echo
-        echo here is value of tag  $(tag) imageRepository $(imageRepository)
-        # echo "docker run $(imageRepository) ls -la /root/"
-        #       docker run $(imageRepository) ls -la /root/
 
-        # echo "docker run $(imageRepository):$(tag) ls -la /root/"
-        #       docker run $(imageRepository):$(tag) ls -la /root/
+        # echo "docker login $(containerRegistry)  "
+        #       docker login $(containerRegistry)
 
-
-        echo "docker login $(containerRegistry)  "
-              docker login $(containerRegistry)
-
-        # echo "docker pull $(imageRepository):$(tag) "
-        #       docker pull $(imageRepository):$(tag)
-        #  above gives below error
-        # 2021-01-31T00:55:20.4220359Z docker pull sekhemrebarebone:253
-        # 2021-01-31T00:55:21.4140208Z Error response from daemon: pull access denied for sekhemrebarebone, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
-        #
-
-        # echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag) "
-        #       docker pull  $(containerRegistry)/$(imageRepository):$(tag)
 
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
-
-
-        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) ls -la /root/ "
-              docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) ls -la /root/
-
-
-        # echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh "
-        #       docker run  $(containerRegistry)/$(imageRepository):$(tag) /root/theAnswerIs.sh
 
 
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
@@ -97,12 +73,3 @@ stages:
 
         echo
         echo "hello Corinde "
-
-
-
-
-      #
-      # target:
-      #   container: builder
-      #
-      #
