@@ -77,6 +77,10 @@ stages:
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag)
 
+
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/ "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag) ls -la /root/
+
         echo
         echo "hello Corinde "
 
