@@ -22,24 +22,49 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build and push stage bare bones
+  displayName: login to docker registry and docker pull image
   jobs:
-  - job: Build
-    displayName: Build
+  - job: LoginContainerRegistryDockerPullImage
+    displayName: login to docker registry
     pool:
       vmImage: $(vmImageName)
     steps:
-    # - task: Docker@2
-    #   displayName: Build and push an image to container registry bare bone
-    #   inputs:
-    #     command: buildAndPush
-    #     repository: $(imageRepository)
-    #     dockerfile: $(dockerfilePath)
-    #     containerRegistry: $(dockerRegistryServiceConnection)
-    #     tags: |
-    #       $(tag)
-    #       $(tag_latest)
+    - task: Docker@2
+      displayName: Login to ACR and run something
+      inputs:
+        command: login
+        containerRegistry: $(dockerRegistryServiceConnection)
+    - bash: |
+        echo
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
 
+
+  - job: BuildDockerImageConditionally
+    pool:
+      vmImage: $(vmImageName)
+    dependsOn: LoginContainerRegistryDockerPullImage
+    condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
+    displayName: if docker image does not exist then build it
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry bare bone
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          $(tag_latest)
+
+  - job: DockerRunImage
+    dependsOn: BuildDockerImageConditionally
+    condition: succeeded() # this job will only run if Foo fails
+    displayName: run binary inside docker container
+    steps:
     - task: Docker@2
       displayName: Login to ACR and run something
       inputs:
@@ -49,27 +74,11 @@ stages:
         echo hello World
         echo
         echo "ls -la /root/"
-              ls -la /root/
-
-    - bash: |
         echo
-        echo hello so lets issue a docker run now
-        # docker run $(tag)  ls -la /root/
-        echo "docker images"
-              docker images
-        echo
-
-        # echo "docker login $(containerRegistry)  "
-        #       docker login $(containerRegistry)
-
-
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
-
-
+              
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
               docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
-
-
         echo
         echo "hello Corinde "
