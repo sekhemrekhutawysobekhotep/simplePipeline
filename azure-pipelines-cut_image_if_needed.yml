@@ -61,7 +61,8 @@ stages:
     pool:
       vmImage: $(vmImageName)
     dependsOn: LoginContainerRegistryDockerPullImage
-    condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
+    # condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
+    condition: eq(variables.did_docker_pull_succeed, false) # this job will only run if did_docker_pull_succeed false
     displayName: if docker image does not exist then build it
     # pool:
     #   vmImage: $(vmImageName)
@@ -92,7 +93,6 @@ stages:
         echo "I can run inside the container (it starts by default)"
         echo hello World
         echo
-        # echo "here is value of did_docker_pull_succeed using bash syntax $did_docker_pull_succeed "
         echo "here is value of did_docker_pull_succeed using MS syntax  $(did_docker_pull_succeed)"
         echo
         echo "ls -la /root/"
