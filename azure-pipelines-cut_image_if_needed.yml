@@ -19,6 +19,7 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   tag_latest: 'latest'
+  did_docker_pull_succeed: true
 
 stages:
 - stage: Build
@@ -35,9 +36,20 @@ stages:
         command: login
         containerRegistry: $(dockerRegistryServiceConnection)
     - bash: |
+      echo
+      echo "before doing anything value of did_docker_pull_succeed is $(did_docker_pull_succeed)"
+      echo
+      echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+            docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)      || {   # ... catch error
+
+        resp_code=$?
         echo
-        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
-              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
+        echo "NOTICE - docker full  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
+
+        did_docker_pull_succeed = false
+      }
+
+
 
 
   - job: BuildDockerImageConditionally
@@ -74,6 +86,9 @@ stages:
     - bash: |
         echo "I can run inside the container (it starts by default)"
         echo hello World
+        echo
+        echo "here is value of did_docker_pull_succeed using bash syntax $did_docker_pull_succeed "
+        echo "here is value of did_docker_pull_succeed using MS syntax  $(did_docker_pull_succeed)"
         echo
         echo "ls -la /root/"
         echo
