@@ -70,7 +70,31 @@ stages:
       inputs:
         command: login
         containerRegistry: $(dockerRegistryServiceConnection)
-    - script: echo "I can run inside the container (it starts by default)"
+
+    - script: 
+        echo "this is in a script "
+        echo "I can run inside the container (it starts by default)"
+        echo hello World
+        echo
+        echo "ls -la /root/"
+        echo
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
+
+        echo "below is not showing output of shell execution"
+        echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
+              docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
+        echo
+        echo "so lets see if below shows or not its using a -ti so does it"
+        echo
+        echo "docker run -ti $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
+              docker run -ti  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
+        echo
+        echo "hello Corinde "
+
+    - bash: |
+        echo "this is in a bash "
+        echo "I can run inside the container (it starts by default)"
         echo hello World
         echo
         echo "ls -la /root/"
