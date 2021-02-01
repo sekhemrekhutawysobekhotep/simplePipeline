@@ -36,18 +36,18 @@ stages:
         command: login
         containerRegistry: $(dockerRegistryServiceConnection)
     - bash: |
-      echo
-      echo "before doing anything value of did_docker_pull_succeed is $(did_docker_pull_succeed)"
-      echo
-      echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
-            docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)      || {   # ... catch error
-
-        resp_code=$?
         echo
-        echo "NOTICE - docker full  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
+        echo "before doing anything value of did_docker_pull_succeed is $(did_docker_pull_succeed)"
+        echo
+        echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)      || {   # ... catch error
 
-        did_docker_pull_succeed = false
-      }
+          resp_code=$?
+          echo
+          echo "NOTICE - docker full  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
+
+          did_docker_pull_succeed = false
+        }
 
 
 
