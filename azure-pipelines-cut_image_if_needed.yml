@@ -54,7 +54,6 @@ stages:
         echo
         echo "afterward value of did_docker_pull_succeed is -->$(did_docker_pull_succeed)<-- "
         echo
-        return 0  #  give a good return code since we use variable did_docker_pull_succeed to communicate onward
 
 
 
