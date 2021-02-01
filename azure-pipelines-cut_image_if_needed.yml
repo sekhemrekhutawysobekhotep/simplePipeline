@@ -78,7 +78,13 @@ stages:
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
               docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
 
+        echo "below is not showing output of shell execution"
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
               docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
+        echo
+        echo "so lets see if below shows or not its using a -ti so does it"
+        echo
+        echo "docker run -ti $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
+              docker run -ti  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
         echo
         echo "hello Corinde "
