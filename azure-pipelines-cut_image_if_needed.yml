@@ -46,7 +46,11 @@ stages:
           echo
           echo "NOTICE - docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
 
-          did_docker_pull_succeed=false
+          # did_docker_pull_succeed=false
+          echo '##vso[task.setvariable variable=did_docker_pull_succeed]false'
+
+          # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch
+
           echo
           echo "OK so just set to false variable did_docker_pull_succeed  -->$(did_docker_pull_succeed)<--"
           echo
