@@ -46,7 +46,7 @@ stages:
           echo
           echo "NOTICE - docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
 
-          did_docker_pull_succeed = false
+          did_docker_pull_succeed=false
           echo
           echo "OK so just set to false variable did_docker_pull_succeed  -->$(did_docker_pull_succeed)<--"
           echo
