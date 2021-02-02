@@ -19,7 +19,7 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   tag_latest: 'latest'
-  did_docker_pull_succeed: true
+  did_docker_pull_succeed: 'true'
 
 stages:
 - stage: Build
@@ -66,7 +66,7 @@ stages:
       vmImage: $(vmImageName)
     dependsOn: LoginContainerRegistryDockerPullImage
     # condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
-    condition: eq(variables.did_docker_pull_succeed, false) # this job will only run if did_docker_pull_succeed false
+    condition: eq(variables.did_docker_pull_succeed, 'false') # this job will only run if did_docker_pull_succeed false
     displayName: if docker image does not exist then build it
     # pool:
     #   vmImage: $(vmImageName)
