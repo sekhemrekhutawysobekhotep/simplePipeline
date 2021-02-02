@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'f6574427-40e1-433e-8d97-dd5ef391af9a'
-  imageRepository: 'sekhemrebarebonettth001'  #  repository name must be lowercase
+  imageRepository: 'sekhemrebarebonettth004'  #  repository name must be lowercase
   containerRegistry: 'stenscontainerregistrycairo.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/barebone/Dockerfile'
   tag: '$(Build.BuildId)'
@@ -83,10 +83,5 @@ stages:
         echo "below is not showing output of shell execution"
         echo "docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
               docker run  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
-        echo
-        echo "so lets see if below shows or not its using a -ti so does it"
-        echo
-        echo "docker run -ti $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh "
-              docker run -ti  $(containerRegistry)/$(imageRepository):$(tag_latest) /root/theAnswerIs.sh
         echo
         echo "hello Corinde "
