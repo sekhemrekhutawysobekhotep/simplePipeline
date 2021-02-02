@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'f6574427-40e1-433e-8d97-dd5ef391af9a'
-  imageRepository: 'sekhemrebarebonettth003'  #  repository name must be lowercase
+  imageRepository: 'sekhemrebarebonettth001'  #  repository name must be lowercase
   containerRegistry: 'stenscontainerregistrycairo.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/barebone/Dockerfile'
   tag: '$(Build.BuildId)'
@@ -19,7 +19,6 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   tag_latest: 'latest'
-  did_docker_pull_succeed: 'true'
 
 stages:
 - stage: Build
@@ -37,36 +36,15 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
     - bash: |
         echo
-        echo "before doing anything value of did_docker_pull_succeed is $(did_docker_pull_succeed)"
-        echo
         echo "docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest) "
-              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)      || {   # ... catch error
-
-          resp_code=$?
-          echo
-          echo "NOTICE - docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)   failed so lets build the image"
-
-          # did_docker_pull_succeed=false
-          echo '##vso[task.setvariable variable=did_docker_pull_succeed]false'
-
-          # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch
-
-          echo
-          echo "OK so just set to false variable did_docker_pull_succeed  -->$(did_docker_pull_succeed)<--"
-          echo
-        }
-        echo
-        echo "afterward value of did_docker_pull_succeed is -->$(did_docker_pull_succeed)<-- "
-        echo
-
+              docker pull  $(containerRegistry)/$(imageRepository):$(tag_latest)
 
 
   - job: BuildDockerImageConditionally
     pool:
       vmImage: $(vmImageName)
     dependsOn: LoginContainerRegistryDockerPullImage
-    # condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
-    condition: eq(variables.did_docker_pull_succeed, 'false') # this job will only run if did_docker_pull_succeed false
+    condition: failed() # this job will only run if LoginContainerRegistryDockerPullImage failed
     displayName: if docker image does not exist then build it
     # pool:
     #   vmImage: $(vmImageName)
@@ -96,8 +74,6 @@ stages:
     - bash: |
         echo "I can run inside the container (it starts by default)"
         echo hello World
-        echo
-        echo "here is value of did_docker_pull_succeed using MS syntax  $(did_docker_pull_succeed)"
         echo
         echo "ls -la /root/"
         echo
